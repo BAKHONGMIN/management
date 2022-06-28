@@ -21,6 +21,9 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
+const multer = require('multer')
+
+
 app.get('/api/customers', (req, res) => {
     connection.query(
       "SELECT * FROM CUSTOMER",
