@@ -49,7 +49,7 @@ class App extends Component {
 
 
   componentDidMount() {//모든 component가 마운트가 되면 실행됨
-    this.timer = setInterval(this.progress, 1);
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then(res => this.setState({customers : res}))
       .catch(err => console.log(err));
@@ -80,10 +80,11 @@ class App extends Component {
                   <TableCell>생일</TableCell>
                   <TableCell>성별</TableCell>
                   <TableCell>직업</TableCell>
+                  <TableCell>설정</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.customers ? this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}></Customer>); 
+                {this.state.customers ? this.state.customers.map(c => { return (<Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}></Customer>); 
                 }) :
                 // <TableRow>
                 //   <TableCell colSpan="6" align='center'>
