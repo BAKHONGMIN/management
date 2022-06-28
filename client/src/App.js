@@ -7,6 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/Tablebody';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -17,16 +19,21 @@ const styles = theme => ({
   },
   Table: {
     minWidth: 1080 //이렇게 해야 1080이하에서 가로스크롤바가 생긴다.
+  },
+  progress:{
+    margin: theme.spacing.unit * 2
   }
-})
+});
 
 
 class App extends Component {
   state ={
-    customers:""
+    customers:"",
+    completed:0
   }
 
   componentDidMount() {//모든 component가 마운트가 되면 실행됨
+    this.timer = setInterval(this.progress, 1);
     this.callApi()
       .then(res => this.setState({customers : res}))
       .catch(err => console.log(err));
@@ -36,6 +43,11 @@ class App extends Component {
     const response = await fetch('/api/customers');
     const body = await response.json();
     return body;
+  }
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({completed: completed >= 100 ? 0 : completed + 1});
   }
 
   render(){
@@ -54,7 +66,19 @@ class App extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.customers ? this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}></Customer>); }) : ""}
+              {this.state.customers ? this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}></Customer>); 
+              }) :
+              // <TableRow>
+              //   <TableCell colSpan="6" align='center'>
+              //     <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
+              //   </TableCell>
+              // </TableRow>
+              <TableRow>
+                <TableCell colSpan="6" align='center'>
+                  <CircularProgress color="secondary" className={classes.progress} />
+                </TableCell>
+              </TableRow>
+              }
             </TableBody>
           </Table>
       </Paper>
