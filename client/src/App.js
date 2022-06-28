@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/Tablebody';
-import Stack from '@mui/material/Stack';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -28,10 +27,26 @@ const styles = theme => ({
 
 
 class App extends Component {
-  state ={
-    customers:"",
-    completed:0
+
+
+  constructor(props){
+    super(props);
+    this.state={
+      customers:'',
+      completed:0
+    }
   }
+
+  stateRefresh = () => {
+    this.setState({
+      customers:'',
+      completed:0
+    });
+    this.callApi()
+    .then(res => this.setState({customers : res}))
+    .catch(err => console.log(err));
+  }
+
 
   componentDidMount() {//모든 component가 마운트가 되면 실행됨
     this.timer = setInterval(this.progress, 1);
@@ -84,7 +99,7 @@ class App extends Component {
               </TableBody>
             </Table>
         </Paper>
-        <CustomerAdd />
+        <CustomerAdd stateRefresh={this.stateRefresh} />
       </div>
     );
   }
