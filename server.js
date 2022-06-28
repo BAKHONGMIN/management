@@ -1,13 +1,39 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+//server.js
+const express = require("express");
+const bodyParse = require("body-parser");
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParse.json());
+app.use(bodyParse.urlencoded({extended : true}));
 
-app.get("/api/hello", (req,res) => {
-    res.send({message : "Hello Express!"});
+app.get('/api/customers', (req, res) => {
+    res.send([
+        {
+          id    : 1,
+          image : "https://placeimg.com/64/64/1",
+          name  : "신라면",
+          birthday : "494949",
+          gender: "남자",
+          job   : "백수" 
+        },
+        {
+          id    : 2,
+          image : "https://placeimg.com/64/64/2",
+          name  : "김밥천국",
+          birthday : "123456",
+          gender: "남자",
+          job   : "요리사" 
+        },
+        {
+          id    : 3,
+          image : "https://placeimg.com/64/64/3",
+          name  : "짜파게티",
+          birthday : "456789",
+          gender: "남자",
+          job   : "라면" 
+        }]
+    );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

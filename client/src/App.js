@@ -20,69 +20,47 @@ const styles = theme => ({
   }
 })
 
-const customers = [
-{
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': '홍길동',
-  'birthday': '12345',
-  'gender': '남자',
-  'job': '대학생'
-},
-{
-  'id': 2,
-  'image': 'https://placeimg.com/64/64/4',
-  'name': '이순진',
-  'birthday': '999999',
-  'gender': '남자',
-  'job': '대학생'
-},
-{
-  'id': 3,
-  'image': 'https://placeimg.com/64/64/3',
-  'name': '유관순',
-  'birthday': '111111',
-  'gender': '여자',
-  'job': '대학생'
-}
-]
 
 class App extends Component {
-  render() {
-    const { classes } = this.props; //위에서 정의한 스타일이 적용될수 있게함
+  state ={
+    customers:""
+  }
+
+  componentDidMount() {//모든 component가 마운트가 되면 실행됨
+    this.callApi()
+      .then(res => this.setState({customers : res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
+  render(){
+    const {classes} = this.props;
     return (
       <Paper className={classes.root}>
-        <Table className={classes.Table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>id</TableCell>
-              <TableCell>image</TableCell>
-              <TableCell>name</TableCell>
-              <TableCell>birthday</TableCell>
-              <TableCell>gender</TableCell>
-              <TableCell>job</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {customers.map(c => { 
-              return (
-                <Customer
-                  key={c.id}
-                  id={c.id}
-                  image={c.image}
-                  name = {c.name}
-                  birthday = {c.birthday}
-                  gender = {c.gender}
-                  job = {c.job}
-                />
-                )
-              })
-            }
-          </TableBody>
-        </Table>
+          <Table className={classes.Table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>번호</TableCell>
+                <TableCell>이미지</TableCell>
+                <TableCell>이름</TableCell>
+                <TableCell>생일</TableCell>
+                <TableCell>성별</TableCell>
+                <TableCell>직업</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.customers ? this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}></Customer>); }) : ""}
+            </TableBody>
+          </Table>
       </Paper>
     );
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(App); //App에 props로 전달
+
