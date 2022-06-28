@@ -1,4 +1,5 @@
 //server.js
+const fs = require('fs');
 const express = require("express");
 const bodyParse = require("body-parser");
 const app = express();
@@ -7,32 +8,25 @@ const port = process.env.PORT || 5000;
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({extended : true}));
 
+const data = fs.readFileSync('./database.json');
+const conf = JSON.parse(data);
+const mysql = require('mysql');
+
+const connection = mysql.createConnection({
+  host: conf.host,
+  user: conf.user,
+  password: conf.password,
+  port:conf.port,
+  database:conf.database
+});
+connection.connect();
+
 app.get('/api/customers', (req, res) => {
-    res.send([
-        {
-          id    : 1,
-          image : "https://placeimg.com/64/64/1",
-          name  : "신라면",
-          birthday : "494949",
-          gender: "남자",
-          job   : "백수" 
-        },
-        {
-          id    : 2,
-          image : "https://placeimg.com/64/64/2",
-          name  : "김밥천국",
-          birthday : "123456",
-          gender: "남자",
-          job   : "요리사" 
-        },
-        {
-          id    : 3,
-          image : "https://placeimg.com/64/64/3",
-          name  : "짜파게티",
-          birthday : "456789",
-          gender: "남자",
-          job   : "라면" 
-        }]
+    connection.query(
+      "SELECT * FROM CUSTOMER",
+      (err, rows, fields) => {
+        res.send(rows);
+      }
     );
 });
 
