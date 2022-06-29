@@ -1,5 +1,6 @@
 import React from "react";
 import {post} from 'axios';
+import '../App.css';
 import Dialog  from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import  DialogTitle  from "@material-ui/core/DialogTitle";
@@ -12,6 +13,9 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
     hidden:{
         display:'none'
+    },
+    add:{
+        backgroundColor:"#81a090",
     }
 });
 
@@ -103,7 +107,7 @@ class CustomerAdd extends React.Component{
         const{classes} = this.props;
         return(
             <div>
-                <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+                <Button variant="contained" onClick={this.handleClickOpen} className={classes.add}>
                     고객 추가하기
                 </Button>
                 <Dialog open={this.state.open} onClose={this.handleClose}>

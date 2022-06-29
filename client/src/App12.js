@@ -25,12 +25,7 @@ import Logo from './img/2020 RIAHN.png';
 const styles = theme => ({
   root: {
     width: "100%",
-    height:"100vh",
     minWidth: 1080,
-    backgroundColor:"#626262"
-  },
-  menui:{
-    backgroundColor:"#c8e6d6"
   },
   menu: {
     margin: 20,
@@ -81,8 +76,6 @@ const styles = theme => ({
     marginLeft: 5,
     flexGrow: 1,
     display: "none",
-    textAlign:"center",
-    color:"#63c9af",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -216,7 +209,7 @@ class App12 extends Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar className='bar'>
+          <Toolbar>
             <IconButton
               edge="start"
               className={classes.menuButton}
@@ -224,11 +217,10 @@ class App12 extends Component {
               aria-label="open drawer"
             >
               {/* <MenuIcon /> */}
-              
+              <h2 className='logo'><img src={Logo} alt='logo' width="300px"/></h2>
             </IconButton>
-            <h2 className='logo'><img src={Logo} alt='logo' width="150px"/></h2>  
-            <Typography className={classes.title} variant="h5" noWrap>
-              리안헤어 고객 관리
+            <Typography className={classes.title} variant="h6" noWrap>
+              고객 관리 시스템
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -255,7 +247,7 @@ class App12 extends Component {
 
         <Paper className={classes.paper}>
             <Table className={classes.Table}>
-              <TableHead className={classes.menui}>
+              <TableHead>
                 <TableRow>
                   {cellList.map(c => {
                     return <TableCell className={classes.tableHead}>{c}</TableCell>
